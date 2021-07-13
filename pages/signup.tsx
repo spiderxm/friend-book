@@ -1,7 +1,7 @@
 import {Fragment} from "react";
 import SignupForm from "../components/SignUp/signup-form";
 
-function SignupPage(props) {
+function SignupPage() {
     return <Fragment>
         <SignupForm/>
     </Fragment>

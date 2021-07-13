@@ -1,28 +1,28 @@
-import {Fragment, useRef, useState} from "react";
+import React, {Fragment, useRef, useState} from "react";
 import Link from "next/link";
 
-function SignupForm(props) {
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
+function SignupForm() {
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const confirmPasswordRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     function signUpHandler() {
         setError(null);
         setLoading(true);
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        const confirmPassword = confirmPasswordRef.current.value;
+        const email = emailRef.current!.value;
+        const password = passwordRef.current!.value;
+        const confirmPassword = confirmPasswordRef.current!.value;
         if (password !== confirmPassword) {
-
             setLoading(false);
             return;
         }
+        console.log(email)
     }
 
     return <Fragment>
-        <form>
+        <form onSubmit={signUpHandler}>
             <div>
                 <div>
                     <label htmlFor={"email"}>Email </label>
@@ -36,8 +36,11 @@ function SignupForm(props) {
                     <label htmlFor={"confirm-password"}>ConfirmPassword </label>
                     <input type={"password"} id={"confirm-password"} ref={confirmPasswordRef} minLength={7}/>
                 </div>
-                <button>SignUp</button>
-                Already have an account? <Link href={"/signin"}>Signin</Link>
+                {loading ? <span>loading</span> : <button type={"submit"}>Sign Up</button>}
+                {error ? <span>Errors</span> : null}
+                <div>
+                    Already have an account? <Link href={"/signin"}>SignIn</Link>
+                </div>
             </div>
         </form>
     </Fragment>

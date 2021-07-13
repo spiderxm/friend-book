@@ -1,7 +1,7 @@
 import {Fragment} from "react";
 import SignInForm from "../components/SignIn/signin-form";
 
-function SignInPage(props) {
+function SignInPage() {
     return <Fragment>
         <SignInForm/>
     </Fragment>

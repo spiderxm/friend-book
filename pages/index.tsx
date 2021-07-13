@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import {Fragment} from "react";
+import React, {Fragment} from "react";
 
-function Home() {
+const Home: React.FC = () => {
     return <Fragment>
         <Head>
             <title>
