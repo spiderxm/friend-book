@@ -1,7 +1,9 @@
 import React, {FormEvent, Fragment, useRef, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import { setCookie} from "nookies";
+import {setCookie} from "nookies";
+import {Button, Form, Header, Loader, Message} from "semantic-ui-react";
+import classes from "./signinform.module.css";
 
 const signInHandler = async (credentials: { email: string, password: string }) => {
     const details = {
@@ -30,7 +32,7 @@ function SignInForm() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<object | null>(null);
     const router = useRouter()
 
 
@@ -44,6 +46,7 @@ function SignInForm() {
         if (email && password) {
             try {
                 const user = await signInHandler({email, password});
+                setLoading(false);
                 setCookie(null, 'access-token', user.tokens.access, {
                     HttpOnly: true
                 })
@@ -55,29 +58,36 @@ function SignInForm() {
                 localStorage.setItem("image", user.image)
                 await router.replace("/");
             } catch (e) {
+                setLoading(false);
                 setError(e);
+                console.log(e)
             }
         }
     }
 
     return <Fragment>
-        <form onSubmit={SignInHandler}>
-            <div>
-                <div>
+        <div className={classes.form}>
+            <Form onSubmit={SignInHandler}>
+                <Header as='h1'>Sign In</Header>
+                <Form.Field>
                     <label htmlFor={"email"}>Email </label>
-                    <input type={"email"} id={"email"} ref={emailRef}/>
-                </div>
-                <div>
+                    <input type={"email"} id={"email"} ref={emailRef} required/>
+                </Form.Field>
+                <Form.Field>
                     <label htmlFor={"password"}>Password</label>
-                    <input type={"password"} id={"password"} ref={passwordRef} minLength={7}/>
-                </div>
-                {loading ? <span>loading</span> : <button type={"submit"}>Sign In</button>}
-                {error ? <span>Errors</span> : null}
-                <div>
+                    <input type={"password"} id={"password"} ref={passwordRef} minLength={7} required/>
+                </Form.Field>
+                {loading ? <Loader active inline='centered'/> :
+                    <Button fluid primary type={"submit"} in>Sign In</Button>}
+                {error != null ? <Message negative>
+                    <p>{error.toString()}</p>
+                </Message> : null
+                }
+                <Message>
                     Don't have an account? <Link href={"/signup"}>Signup</Link>
-                </div>
-            </div>
-        </form>
+                </Message>
+            </Form>
+        </div>
     </Fragment>
 }
 
