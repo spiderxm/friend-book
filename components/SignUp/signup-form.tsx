@@ -2,6 +2,7 @@ import React, {FormEvent, Fragment, useRef, useState} from "react";
 import Link from "next/link";
 import {Button, Form, Header, Loader, Message} from "semantic-ui-react";
 import classes from "./signup-form.module.css"
+import Notiflix from "notiflix";
 
 function SignupForm() {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -41,9 +42,18 @@ function SignupForm() {
                 userNameRef.current!.value = "";
                 passwordRef.current!.value = "";
                 confirmPasswordRef.current!.value = "";
+                Notiflix.Notify.success('Account created successfully', {
+                    timeout: 2000,
+                    position:"right-bottom"
+
+                })
             } else {
                 const errorData = await response.json()
                 setError(errorData.errors);
+                Notiflix.Notify.failure('There is some error', {
+                    timeout: 2000,
+                    position:"right-bottom"
+                })
                 setLoading(false);
             }
 
@@ -82,7 +92,6 @@ function SignupForm() {
                     <p>{value[0]}</p>
                 </Message>
             })}
-            {/*//1955136673@nith.ac.in*/}
             {successMessage ? <Message positive>
                 <p>{successMessage}</p>
             </Message> : null}

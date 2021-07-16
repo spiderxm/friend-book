@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPolicy} from "../store/privacy-policy";
-import {Message, Placeholder} from "semantic-ui-react";
+import {Header, Message, Placeholder} from "semantic-ui-react";
 
 
 const PrivacyPolicyPage: React.FC = () => {
@@ -14,8 +14,10 @@ const PrivacyPolicyPage: React.FC = () => {
             setFetchedPolicy(true)
         }
     }, []);
-    console.log(loading, privacyPolicy, error, errorMessage)
     return <div>
+        <Header>
+            <title>Privacy Policy</title>
+        </Header>
         {loading ? <Placeholder>
             <Placeholder.Paragraph>
                 <Placeholder.Line/>

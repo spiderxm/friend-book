@@ -1,0 +1,69 @@
+.post {
+    width: 45%;
+    max-width: 80%;
+    margin: 0 auto 0 auto;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.commentBody {
+    width: 45%;
+    max-width: 80%;
+    margin: 2rem auto 0 auto;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.comments {
+    width: 45%;
+    max-width: 80%;
+    margin: 2rem auto 0 auto;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.image {
+    max-width: 90%;
+    max-height: 600px;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.caption {
+    text-align: center;
+    font-size: 18px;
+    font-family: monospace;
+}
+
+@media only screen and (max-width: 500px) {
+    .post, .comments, .commentBody {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 920px) {
+    .post, .comments, .commentBody {
+        width: 70%;
+    }
+
+}
+
+.icon {
+    text-align: center;
+
+}
+
+.heart {
+    margin-right: 50px;
+    display: inline-block;
+}
+
+.comment {
+    margin-left: 10px;
+    display: inline-block;
+}

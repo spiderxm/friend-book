@@ -4,6 +4,7 @@ import {useRouter} from "next/router";
 import {setCookie} from "nookies";
 import {Button, Form, Header, Loader, Message} from "semantic-ui-react";
 import classes from "./signinform.module.css";
+import Notiflix from "notiflix";
 
 const signInHandler = async (credentials: { email: string, password: string }) => {
     const details = {
@@ -56,10 +57,20 @@ function SignInForm() {
                 localStorage.setItem("username", user.username)
                 localStorage.setItem("email", user.email)
                 localStorage.setItem("image", user.image)
+                localStorage.setItem("user_since", user.created_at)
+                Notiflix.Notify.success('Login Successful', {
+                    timeout: 2000,
+                    position: "right-bottom"
+                })
                 await router.replace("/");
             } catch (e) {
                 setLoading(false);
                 setError(e);
+                Notiflix.Notify.failure('There is some error', {
+                    timeout: 2000,
+                    position: "right-bottom"
+
+                })
                 console.log(e)
             }
         }

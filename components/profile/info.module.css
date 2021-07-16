@@ -1,0 +1,40 @@
+.image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.info {
+    display: inline-block;
+    margin: 1rem;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.email {
+    font-weight: bold;
+    font-size: 1rem;
+    display: block;
+    position: absolute;
+    top: 66%;
+}
+
+.profile {
+    margin: 2rem auto 0 auto;
+    width: fit-content;
+    max-width: 80%;
+    position: relative;
+}
+
+.userSince{
+    margin-bottom: 0;
+    font-size: 1rem;
+    position: absolute;
+    bottom: 0;
+}

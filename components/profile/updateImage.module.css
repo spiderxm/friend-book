@@ -1,0 +1,15 @@
+.form {
+    width: 400px;
+    max-width: 80%;
+    margin: 10rem auto 0 auto;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.featureImage{
+    display: block;
+    margin: 1rem auto;
+    max-width: 90%;
+    border-radius: .5rem;
+}

@@ -1,43 +1,40 @@
 import Head from 'next/head'
 import React, {Fragment, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchPosts} from "../store/posts";
-import Post from "../components/post/post";
+import {fetchMyPosts} from "../../store/my-posts";
+import MyPost from "../post/my-post";
+import {Grid} from "semantic-ui-react";
 
-const Home: React.FC = () => {
+const MyPosts: React.FC = () => {
     const dispatch = useDispatch();
     const [fetchedPosts, setFetchPosts] = useState(false);
-    const posts = useSelector(state => state.posts.posts);
-
+    const posts = useSelector(state => state.myPosts.posts);
     useEffect(() => {
         if (!fetchedPosts && posts.length == 0) {
-            dispatch(fetchPosts());
+            dispatch(fetchMyPosts());
             setFetchPosts(true);
         }
     }, [])
     return <Fragment>
         <Head>
             <title>
-                Feed
+                My Profile
             </title>
-
         </Head>
-        <h1>Feed</h1>
-        <ul>
+
+        <Grid>
             {posts.map((post: {
-                user: {
-                    image: string;
-                    username: string;
-                };
                 caption: string;
                 image: string;
                 id: number
             }) => {
-                return <Post post={post}/>
+                return <Grid.Column computer={4} mobile={12} tablet={9}>
+                    <MyPost post={post}/>
+                </Grid.Column>
             })}
-        </ul>
+        </Grid>
     </Fragment>
 }
 
 
-export default Home;
+export default MyPosts;

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Button, Icon} from "semantic-ui-react";
+import {Button, Icon, Menu} from "semantic-ui-react";
 import Link from "next/link"
-import {destroyCookie, parseCookies} from "nookies";
+import {parseCookies} from "nookies";
 import {useRouter} from "next/router";
 
 const Navbar: React.FC = () => {
@@ -17,68 +17,41 @@ const Navbar: React.FC = () => {
         }
         setLoading(false);
     })
+    return <Menu secondary>
+        <Menu.Item
+            name='Feed'
+            onClick={() => {
+                router.push("/");
+            }}
+        >
+        </Menu.Item>
 
-    async function logoutHandler() {
-        const cookies = parseCookies()
-        const refreshToken: string = cookies['refresh-token']
-        const accessToken: string = cookies['access-token']
-        if (refreshToken && accessToken) {
-            console.log({
-                method: "POST",
-                body: JSON.stringify({
-                    "refresh_token": refreshToken
-                }),
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + accessToken
-                },
-                redirect: 'follow'
-            })
-            await fetch("http://localhost:8000/auth/logout/", {
-                method: "POST",
-                body: JSON.stringify({
-                    "refresh_token": refreshToken
-                }),
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + accessToken
-
-                },
-                redirect: 'follow'
-            })
-            localStorage.removeItem("email")
-            localStorage.removeItem("image")
-            localStorage.removeItem("username")
-            destroyCookie(null, "refresh-token")
-            destroyCookie(null, "access-token")
-            setLoggedIn(false);
-            await router.replace("/signin")
-        }
-    }
-
-    return <div>
-        {loading ? <div>Loading</div> : null}
-        {!loading && loggedIn ? <Button size='small' color='green' onClick={logoutHandler}>
-            <Icon name='log out'/>
-            LogOut
-        </Button> : null}
-        {!loading && loggedIn ? <Link href={"reset-password"}>
-            <Button size='small' color='green'>
-                <Icon name='leaf'/>
-                Reset Password
+        <Menu.Menu position={"right"}>
+            {!loading && !loggedIn ? <Link href={"signin"}><Button size='small' color='black'>
+                <Icon name='sign-in' size={"large"}/>
+                SignIn
             </Button></Link> : null}
-        {!loading && !loggedIn ? <Link href={"signin"}><Button size='small' color='black'>
-            <Icon name='sign-in'/>
-            SignIn
-        </Button></Link> : null}
-        {!loading && !loggedIn ?
-            <Link href={"/signup"}>
+
+            {!loading && !loggedIn ?
+                <Link href={"/signup"}>
+                    <Button size='small' color='black'>
+                        <Icon name='sign-out alternate' size={"large"}/>
+                        SignUp
+                    </Button>
+                </Link> : null}
+            {!loading && loggedIn ? <Link href={"profile/create-post"}>
+                <Button size='small' color='twitter'>
+                    <Icon name='image'/>
+                    Create Post
+                </Button></Link> : null}
+            {!loading && loggedIn ? <Link href={"/profile"}>
                 <Button size='small' color='black'>
-                    <Icon name='sign-in alternate'/>
-                    SignUp
+                    <Icon name='user circle outline' size={"large"}/>
+                    Profile
                 </Button>
             </Link> : null}
-    </div>
+        </Menu.Menu>
+    </Menu>
 }
 
 export default Navbar;
