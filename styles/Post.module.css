@@ -59,11 +59,10 @@
 }
 
 .heart {
-    margin-right: 50px;
     display: inline-block;
 }
 
 .comment {
-    margin-left: 10px;
+    margin-left: 20px;
     display: inline-block;
 }

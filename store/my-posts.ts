@@ -38,6 +38,19 @@ const myPostSlice = createSlice({
                 errorMessage: null
             }
         },
+        // @ts-ignore
+        removePost(state, action) {
+            const id = action.payload.id;
+            // @ts-ignore
+            const posts = state.posts.filter(post => post.id !== id);
+            console.log(posts)
+            return {
+                posts: posts,
+                error: state.error,
+                loading: state.loading,
+                errorMessage: state.errorMessage
+            }
+        },
 
         setError(state) {
             return {

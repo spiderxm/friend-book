@@ -2,6 +2,7 @@ import React, {Dispatch, useEffect, useState} from "react";
 import {parseCookies} from "nookies";
 import {Loader, Comment, Message} from "semantic-ui-react";
 import CommentCard from "./comment";
+import Notiflix from "notiflix";
 
 interface Comment {
     body: string,
@@ -36,7 +37,9 @@ const Comments: React.FC<CommentProps> = (props) => {
             props.setComments(comments);
             props.setLoadingComments(false);
         } else {
-
+            Notiflix.Notify.failure("There is some error", {
+                timeout: 1000
+            })
         }
     }
 

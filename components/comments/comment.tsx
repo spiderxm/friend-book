@@ -20,7 +20,6 @@ const CommentCard: React.FC<CommentProps> = (props) => {
     })
 
     return <Comment>
-        {/*<img src={props.user.image} width={50} height={50} style={{borderRadius:"50%"}}/>*/}
         <Comment.Avatar as='a' src={props.user.image} className={classes.commentUserImage}/>
 
         <Comment.Content>
