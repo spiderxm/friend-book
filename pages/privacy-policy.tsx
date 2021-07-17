@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPolicy} from "../store/privacy-policy";
-import {Header, Message, Placeholder} from "semantic-ui-react";
+import {Message, Placeholder} from "semantic-ui-react";
+import Head from "next/head";
 
 
 const PrivacyPolicyPage: React.FC = () => {
@@ -15,9 +16,9 @@ const PrivacyPolicyPage: React.FC = () => {
         }
     }, []);
     return <div>
-        <Header>
+        <Head>
             <title>Privacy Policy</title>
-        </Header>
+        </Head>
         {loading ? <Placeholder>
             <Placeholder.Paragraph>
                 <Placeholder.Line/>

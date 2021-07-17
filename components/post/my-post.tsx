@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./my-post.module.css";
 import Link from "next/link";
+
 interface Props {
     post: {
         caption: string;

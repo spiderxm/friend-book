@@ -32,7 +32,7 @@ const myPostSlice = createSlice({
         // @ts-ignore
         addPost(state, action) {
             return {
-                posts: [...state.posts, action.payload.post],
+                posts: [action.payload.post, ...state.posts],
                 error: false,
                 loading: false,
                 errorMessage: null
@@ -77,7 +77,6 @@ export const fetchMyPosts = () => {
             });
         if (response.ok) {
             const posts = await response.json();
-            console.log(posts)
             dispatch(myPostSlice.actions.updatePosts({posts: posts}))
         } else {
             dispatch(myPostSlice.actions.setError);

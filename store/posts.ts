@@ -20,7 +20,6 @@ const postSlice = createSlice({
     initialState: initialState,
     reducers: {
         // @ts-ignore
-
         updatePosts(state, action) {
             return {
                 posts: [...state.posts, ...action.payload.posts.results],
@@ -37,6 +36,15 @@ const postSlice = createSlice({
                 errorMessage: "There is some error. Please try again later."
             }
         },
+        // @ts-ignore
+        updateLike(state, action){
+            return {
+                posts: [...state.posts, ...action.payload.posts.results],
+                error: false,
+                loading: false,
+                errorMessage: null
+            }
+        }
     }
 })
 

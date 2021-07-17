@@ -62,7 +62,18 @@
     display: inline-block;
 }
 
+.heartFilled {
+    display: inline-block;
+    color: red;
+}
+
+
 .comment {
     margin-left: 20px;
     display: inline-block;
+}
+
+.likeMessage {
+    text-align: center;
+    font-size: 16px;
 }

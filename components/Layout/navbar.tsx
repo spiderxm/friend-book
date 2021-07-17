@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
         </Menu.Item>
 
         <Menu.Menu position={"right"}>
-            {!loading && !loggedIn ? <Link href={"signin"}><Button size='small' color='black'>
+            {!loading && !loggedIn ? <Link href={"/signin"}><Button size='small' color='black'>
                 <Icon name='sign-in' size={"large"}/>
                 SignIn
             </Button></Link> : null}
@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
                         SignUp
                     </Button>
                 </Link> : null}
-            {!loading && loggedIn ? <Link href={"profile/create-post"}>
+            {!loading && loggedIn ? <Link href={"/profile/create-post"}>
                 <Button size='small' color='twitter'>
                     <Icon name='image'/>
                     Create Post

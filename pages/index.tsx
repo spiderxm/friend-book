@@ -20,9 +20,7 @@ const Home: React.FC = () => {
             <title>
                 Feed
             </title>
-
         </Head>
-        <h1>Feed</h1>
         <ul>
             {posts.map((post: {
                 user: {
@@ -31,7 +29,8 @@ const Home: React.FC = () => {
                 };
                 caption: string;
                 image: string;
-                id: number
+                id: number,
+                likes: string[]
             }) => {
                 return <Post post={post}/>
             })}

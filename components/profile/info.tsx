@@ -5,6 +5,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {destroyCookie, parseCookies} from "nookies";
 import MyPosts from "./my-posts";
+import Notiflix from "notiflix";
 
 const ProfileInfo: React.FC = () => {
     const router = useRouter();
@@ -21,29 +22,38 @@ const ProfileInfo: React.FC = () => {
     })
 
     async function logoutHandler() {
-        const cookies = parseCookies()
-        const refreshToken: string = cookies['refresh-token']
-        const accessToken: string = cookies['access-token']
-        if (refreshToken && accessToken) {
-            console.log({
-                method: "POST",
-                body: JSON.stringify({
-                    "refresh_token": refreshToken
-                }),
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer " + accessToken
-                },
-                redirect: 'follow'
-            })
-            localStorage.removeItem("email")
-            localStorage.removeItem("image")
-            localStorage.removeItem("username")
-            destroyCookie(null, "refresh-token")
-            destroyCookie(null, "access-token")
-            setLoggedIn(false);
-            await router.replace("/signin")
-        }
+
+        Notiflix.Confirm.show('Logout',
+            'Are you sure you want to logout?',
+            'Yes',
+            'No',
+            async function () {
+                const cookies = parseCookies()
+                const refreshToken: string = cookies['refresh-token']
+                const accessToken: string = cookies['access-token']
+                if (refreshToken && accessToken) {
+                    console.log({
+                        method: "POST",
+                        body: JSON.stringify({
+                            "refresh_token": refreshToken
+                        }),
+                        headers: {
+                            "Content-type": "application/json",
+                            "Authorization": "Bearer " + accessToken
+                        },
+                        redirect: 'follow'
+                    })
+                    localStorage.removeItem("email")
+                    localStorage.removeItem("image")
+                    localStorage.removeItem("username")
+                    destroyCookie(null, "refresh-token")
+                    destroyCookie(null, "access-token")
+                    await router.replace("/signin")
+                }
+            },
+            function () {
+            return;
+            });
     }
 
     const windowGlobal = typeof window !== 'undefined' && window;
@@ -51,7 +61,7 @@ const ProfileInfo: React.FC = () => {
         const email = localStorage.getItem("email");
         const username = localStorage.getItem("username");
         let image: string | null = ""
-        if (localStorage.getItem("image")){
+        if (localStorage.getItem("image")) {
             image = localStorage.getItem("image")!.startsWith("http") ? localStorage.getItem("image") : "http://localhost:8000" + localStorage.getItem("image");
         }
         const date: string | null = localStorage.getItem("user_since");
