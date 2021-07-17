@@ -6,9 +6,13 @@ import {useRouter} from "next/router";
 import {destroyCookie, parseCookies} from "nookies";
 import MyPosts from "./my-posts";
 import Notiflix from "notiflix";
+import {useDispatch} from "react-redux";
+import myPostSlice from "../../store/my-posts";
+import postSlice from "../../store/posts";
 
 const ProfileInfo: React.FC = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
     useEffect(() => {
@@ -32,7 +36,8 @@ const ProfileInfo: React.FC = () => {
                 const refreshToken: string = cookies['refresh-token']
                 const accessToken: string = cookies['access-token']
                 if (refreshToken && accessToken) {
-                    console.log({
+                    Notiflix.Loading.hourglass('Loading...');
+                    await fetch("http://localhost:8000/auth/logout/", {
                         method: "POST",
                         body: JSON.stringify({
                             "refresh_token": refreshToken
@@ -41,18 +46,24 @@ const ProfileInfo: React.FC = () => {
                             "Content-type": "application/json",
                             "Authorization": "Bearer " + accessToken
                         },
-                        redirect: 'follow'
                     })
                     localStorage.removeItem("email")
                     localStorage.removeItem("image")
                     localStorage.removeItem("username")
                     destroyCookie(null, "refresh-token")
                     destroyCookie(null, "access-token")
+                    dispatch(myPostSlice.actions.clearPosts)
+                    dispatch(postSlice.actions.clearPosts)
                     await router.replace("/signin")
+                    Notiflix.Loading.remove(100);
+                    Notiflix.Notify.success("Logout Successfull", {
+                        timeout: 1000,
+                        position: "right-bottom"
+                    })
                 }
             },
             function () {
-            return;
+                return;
             });
     }
 

@@ -2,10 +2,25 @@ import {createSlice} from "@reduxjs/toolkit";
 
 interface State {
     loading: boolean,
-    posts: [],
+    posts: Post[],
     error: boolean,
     errorMessage: string | null
 }
+
+interface Post {
+    user: User;
+    caption: string;
+    image: string;
+    created_at: Date;
+    likes: string[];
+    id: number;
+}
+
+interface User {
+    image: string;
+    username: string;
+}
+
 
 const initialState: State = {
     loading: true,
@@ -19,7 +34,6 @@ const postSlice = createSlice({
     name: "posts",
     initialState: initialState,
     reducers: {
-        // @ts-ignore
         updatePosts(state, action) {
             return {
                 posts: [...state.posts, ...action.payload.posts.results],
@@ -36,10 +50,23 @@ const postSlice = createSlice({
                 errorMessage: "There is some error. Please try again later."
             }
         },
-        // @ts-ignore
-        updateLike(state, action){
+        clearPosts(_state){
+            return initialState
+        },
+        updateLike(state, action) {
+            const likes = action.payload.likes;
+            const id = action.payload.id;
+            const updatedPosts = state.posts.map(post => {
+                if (id === post.id) {
+                    return {
+                        ...post,
+                        likes: likes
+                    }
+                }
+                return post;
+            })
             return {
-                posts: [...state.posts, ...action.payload.posts.results],
+                posts: updatedPosts,
                 error: false,
                 loading: false,
                 errorMessage: null

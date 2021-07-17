@@ -3,10 +3,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchPolicy} from "../store/privacy-policy";
 import {Message, Placeholder} from "semantic-ui-react";
 import Head from "next/head";
+import {RootState} from "../store";
 
 
 const PrivacyPolicyPage: React.FC = () => {
-    const {loading, privacyPolicy, error, errorMessage} = useSelector(state => state.privacyPolicy)
+    const {loading, privacyPolicy, error, errorMessage} = useSelector((state: RootState) => state.privacyPolicy)
     const dispatch = useDispatch();
     const [fetchedPolicy, setFetchedPolicy] = useState(false);
     useEffect(() => {
@@ -33,7 +34,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 <Placeholder.Line/>
             </Placeholder.Paragraph>
         </Placeholder> : null}
-        {!loading && !error ? <div dangerouslySetInnerHTML={{__html: privacyPolicy}}/>
+        {!loading && !error ? <div dangerouslySetInnerHTML={{__html: privacyPolicy as string}}/>
             : null}
         {!loading && error ? <Message negative>
             <Message.Header>Error </Message.Header>

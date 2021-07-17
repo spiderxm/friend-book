@@ -1,11 +1,10 @@
 .post {
-    margin: 1rem;
+    margin: 1rem auto;
     width: 286px;
     height: 286px;
     background: grey;
     position: relative;
     border-radius: 1rem;
-
 }
 
 .post > img{

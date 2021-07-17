@@ -4,6 +4,10 @@ import {Icon} from "semantic-ui-react";
 import {parseCookies} from "nookies";
 import Notiflix from "notiflix";
 import {isLoggedIn} from "../../utility/auth";
+import Link from "next/link";
+import {useRouter} from "next/router";
+import {useDispatch} from "react-redux";
+import postSlice from "../../store/posts";
 
 interface Props {
     post: {
@@ -18,7 +22,10 @@ interface Props {
     }
 }
 
+
 const Post: React.FC<Props> = ({post}) => {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const loggedIn = isLoggedIn(null);
     const [likes, setLikes] = useState<string[]>(post.likes);
     const [username, setUserName] = useState("");
@@ -46,9 +53,11 @@ const Post: React.FC<Props> = ({post}) => {
         if (response.ok) {
             const data = await response.json();
             if (data.like) {
+                dispatch(postSlice.actions.updateLike({id: post.id, likes: [username as string, ...likes]}))
                 setLikes([username as string, ...likes]);
             } else {
                 const newLikes = likes.filter(like => like != username)
+                dispatch(postSlice.actions.updateLike({id: post.id, likes: newLikes}))
                 setLikes(newLikes);
             }
         } else {
@@ -67,7 +76,9 @@ const Post: React.FC<Props> = ({post}) => {
             <img className={classes.userImage} src={post.user.image} ALIGN={"middle"}/>
             <span className={classes.username}>{post.user.username}</span>
         </div>
-        <img src={post.image}/>
+        <Link href={"/post/" + post.id.toString()}>
+            <img src={post.image}/>
+        </Link>
         <div className={classes.menu}>
             {likes.includes(username as string) ?
                 <span className={classes.heartFilled} onClick={loggedIn != "" ? likeHandler : () => {
@@ -82,6 +93,7 @@ const Post: React.FC<Props> = ({post}) => {
                                     <Icon name={'heart outline'} size={"large"}/>
                 </span> : null}
             <span onClick={!loggedIn ? notLoggedInMessageHandler : () => {
+                router.push("/post/" + post.id.toString());
             }}>
                             <Icon className={"comments outline"} size='large'/>
             </span>

@@ -98,6 +98,9 @@ function SignupForm() {
             <Message>
                 Already have an account? <Link href={"/signin"}>SignIn</Link>
             </Message>
+            <Message>
+               Didn't receive verification email yet? <Link href={"/resend-verification-email"}>Get One</Link>
+            </Message>
         </Form>
     </Fragment>
 }

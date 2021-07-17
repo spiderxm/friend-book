@@ -11,6 +11,7 @@ import Notiflix from "notiflix";
 import {useRouter} from "next/router";
 import {useDispatch} from "react-redux";
 import myPostSlice from "../../store/my-posts";
+import postSlice from "../../store/posts";
 
 const PostDetailScreen: React.FC<any> = (props) => {
     const [likes, setLikes] = useState<string[]>(props.post.likes)
@@ -42,9 +43,11 @@ const PostDetailScreen: React.FC<any> = (props) => {
         if (response.ok) {
             const data = await response.json();
             if (data.like) {
+                dispatch(postSlice.actions.updateLike({id: props.post.id, likes: [username as string, ...likes]}))
                 setLikes([username as string, ...likes]);
             } else {
                 const newLikes = likes.filter(like => like != username)
+                dispatch(postSlice.actions.updateLike({id: props.post.id, likes: newLikes}))
                 setLikes(newLikes);
             }
         } else {
@@ -66,13 +69,12 @@ const PostDetailScreen: React.FC<any> = (props) => {
                     },
                 })
                 if (response.ok) {
+                    dispatch(myPostSlice.actions.removePost({id: props.post.id}))
+                    await router.replace("/profile")
                     Notiflix.Notify.success("Post Deleted Successfully.", {
                         timeout: 1000,
                         position: "right-bottom"
                     })
-                    dispatch(myPostSlice.actions.removePost({id: props.post.id}))
-                    await router.replace("/profile")
-
                 } else {
                     Notiflix.Notify.failure("There is some error.", {
                         timeout: 1000,
@@ -84,7 +86,6 @@ const PostDetailScreen: React.FC<any> = (props) => {
                 return;
             });
     }
-    console.log(username)
     return <div>
         <Head>
             <title>Post Details</title>
@@ -105,8 +106,9 @@ const PostDetailScreen: React.FC<any> = (props) => {
                 }}><Icon name={'comment alternate outline'}
                          size={"large"}/>
                 </span>
-                <span className={classes.comment} onClick={deletePost}>
-                    <Icon name={'delete'} size={"large"}/></span>
+                {username != "" && username == props.post.user.username ?
+                    <span className={classes.comment} onClick={deletePost}>
+                    <Icon name={'delete'} size={"large"}/></span> : null}
             </div>
             {likes.length === 1 && <h3 className={classes.likeMessage}>Liked by {likes[0]}</h3>}
             {likes.length > 1 &&
@@ -130,7 +132,6 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
         }
     }
     const cookies = parseCookies(context);
-    // cookies['refresh-token'] && cookies['access-token'];
     const response = await fetch("http://localhost:8000/posts/" + context.query.id, {
         headers: {
             "Authorization": "Bearer " + cookies['access-token'],

@@ -5,6 +5,8 @@ import {setCookie} from "nookies";
 import {Button, Form, Header, Loader, Message} from "semantic-ui-react";
 import classes from "./signinform.module.css";
 import Notiflix from "notiflix";
+import {useDispatch} from "react-redux";
+import {fetchMyPosts} from "../../store/my-posts";
 
 const signInHandler = async (credentials: { email: string, password: string }) => {
     const details = {
@@ -21,7 +23,6 @@ const signInHandler = async (credentials: { email: string, password: string }) =
         });
     if (response.ok) {
         const details = (await response.json())
-        console.log(details.data)
         return details.data;
     } else {
         const error = await response.json();
@@ -35,6 +36,7 @@ function SignInForm() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<object | null>(null);
     const router = useRouter()
+    const dispatch = useDispatch();
 
 
     async function SignInHandler(event: FormEvent) {
@@ -58,6 +60,7 @@ function SignInForm() {
                 localStorage.setItem("email", user.email)
                 localStorage.setItem("image", user.image)
                 localStorage.setItem("user_since", user.created_at)
+                dispatch(fetchMyPosts());
                 Notiflix.Notify.success('Login Successful', {
                     timeout: 2000,
                     position: "right-bottom"
@@ -71,7 +74,6 @@ function SignInForm() {
                     position: "right-bottom"
 
                 })
-                console.log(e)
             }
         }
     }

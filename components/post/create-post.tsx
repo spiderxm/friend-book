@@ -44,13 +44,16 @@ const CreatePostForm: React.FC = () => {
             if (response.ok) {
                 const post = await response.json();
                 Notiflix.Notify.success('Post Created Successfully', {
-                    timeout: 2000
+                    timeout: 1000
                 })
                 dispatch(myPostSlice.actions.addPost({post: post}))
                 await router.push("/profile")
             } else {
                 const errors = await response.json()
                 setErrors(errors.errors);
+                Notiflix.Notify.failure('There is some error. Please try again later', {
+                    timeout: 1000
+                })
             }
         }
 

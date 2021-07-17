@@ -3,9 +3,23 @@ import {parseCookies} from "nookies";
 
 interface State {
     loading: boolean,
-    posts: [],
+    posts: Post[],
     error: boolean,
     errorMessage: string | null
+}
+
+interface Post {
+    user: User;
+    caption: string;
+    image: string;
+    created_at: Date;
+    likes: string[];
+    id: number;
+}
+
+interface User {
+    image: string;
+    username: string;
 }
 
 const initialState: State = {
@@ -20,8 +34,7 @@ const myPostSlice = createSlice({
     name: "myPosts",
     initialState: initialState,
     reducers: {
-        // @ts-ignore
-        updatePosts(state, action) {
+        updatePosts(_state, action) {
             return {
                 posts: [...action.payload.posts.results],
                 error: false,
@@ -29,7 +42,6 @@ const myPostSlice = createSlice({
                 errorMessage: null
             }
         },
-        // @ts-ignore
         addPost(state, action) {
             return {
                 posts: [action.payload.post, ...state.posts],
@@ -38,10 +50,8 @@ const myPostSlice = createSlice({
                 errorMessage: null
             }
         },
-        // @ts-ignore
         removePost(state, action) {
             const id = action.payload.id;
-            // @ts-ignore
             const posts = state.posts.filter(post => post.id !== id);
             console.log(posts)
             return {
@@ -51,7 +61,9 @@ const myPostSlice = createSlice({
                 errorMessage: state.errorMessage
             }
         },
-
+        clearPosts(_state){
+            return initialState
+        },
         setError(state) {
             return {
                 ...state,
