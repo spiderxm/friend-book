@@ -11,7 +11,7 @@ const MyPosts: React.FC = () => {
     const dispatch = useDispatch();
     const [fetchedPosts, setFetchPosts] = useState(false);
     const posts = useSelector((state: RootState) => state.myPosts.posts);
-    const loading= useSelector((state: RootState) => state.myPosts.loading)
+    const loading = useSelector((state: RootState) => state.myPosts.loading)
     useEffect(() => {
         if (!fetchedPosts && posts.length == 0) {
             dispatch(fetchMyPosts());
@@ -25,7 +25,8 @@ const MyPosts: React.FC = () => {
             </title>
         </Head>
         <Divider horizontal>Posts</Divider>
-        {!loading && posts.length === 0 ?  <div className={classes.noPostsPresentInfo}><Message> No Posts Created Yet</Message> </div>: null}
+        {!loading && posts.length === 0 ?
+            <div className={classes.noPostsPresentInfo}><Message> No Posts Created Yet</Message></div> : null}
         <div className={classes.row}>
             {posts.map((post: {
                 caption: string;

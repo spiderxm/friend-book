@@ -47,11 +47,11 @@ const ProfileInfo: React.FC = () => {
                             "Authorization": "Bearer " + accessToken
                         },
                     })
+                    document.cookie = `access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+                    document.cookie = `refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
                     localStorage.removeItem("email")
                     localStorage.removeItem("image")
                     localStorage.removeItem("username")
-                    destroyCookie(null, "refresh-token")
-                    destroyCookie(null, "access-token")
                     dispatch(myPostSlice.actions.clearPosts)
                     dispatch(postSlice.actions.clearPosts)
                     await router.replace("/signin")
@@ -91,7 +91,6 @@ const ProfileInfo: React.FC = () => {
                     {email ? <span className={classes.email}>{email}</span> : null}
                     {formattedDate ? <span className={classes.userSince}>User Since: {formattedDate}</span> : null}
                 </div>
-
             </div>
             <div className={classes.profile}>
                 {!loading && loggedIn ? <Link href={"reset-password"}>

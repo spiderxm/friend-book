@@ -44,7 +44,7 @@ function SignupForm() {
                 confirmPasswordRef.current!.value = "";
                 Notiflix.Notify.success('Account created successfully', {
                     timeout: 2000,
-                    position:"right-bottom"
+                    position: "right-bottom"
 
                 })
             } else {
@@ -52,7 +52,7 @@ function SignupForm() {
                 setError(errorData.errors);
                 Notiflix.Notify.failure('There is some error', {
                     timeout: 2000,
-                    position:"right-bottom"
+                    position: "right-bottom"
                 })
                 setLoading(false);
             }
@@ -99,7 +99,7 @@ function SignupForm() {
                 Already have an account? <Link href={"/signin"}>SignIn</Link>
             </Message>
             <Message>
-               Didn't receive verification email yet? <Link href={"/resend-verification-email"}>Get One</Link>
+                Didn't receive verification email yet? <Link href={"/resend-verification-email"}>Get One</Link>
             </Message>
         </Form>
     </Fragment>

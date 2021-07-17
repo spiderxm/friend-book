@@ -9,13 +9,13 @@
 }
 
 @media only screen and (max-width: 500px) {
-    .post{
+    .post {
         width: 90%;
     }
 }
 
 @media only screen and (max-width: 920px) {
-    .post{
+    .post {
         width: 70%;
     }
 
@@ -41,7 +41,9 @@
 }
 
 .username {
+    cursor: pointer;
     font-size: 18px;
+    display: inline-block;
     font-weight: bolder;
 }
 

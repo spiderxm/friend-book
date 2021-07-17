@@ -61,7 +61,7 @@ const myPostSlice = createSlice({
                 errorMessage: state.errorMessage
             }
         },
-        clearPosts(_state){
+        clearPosts(_state) {
             return initialState
         },
         setError(state) {

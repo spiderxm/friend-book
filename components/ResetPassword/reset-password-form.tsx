@@ -44,16 +44,16 @@ const ResetPasswordForm: React.FC = () => {
                 setSuccess(successMessage);
                 Notiflix.Notify.success(successMessage, {
                     timeout: 1000,
-                    position:"right-bottom"
+                    position: "right-bottom"
                 })
                 oldPasswordRef.current!.value = ""
                 newPasswordRef.current!.value = ""
-            }else{
+            } else {
                 const errorData = await response.json()
                 setError(errorData.errors);
                 Notiflix.Notify.failure("There is some error", {
                     timeout: 1000,
-                    position:"right-bottom"
+                    position: "right-bottom"
                 })
             }
             setLoading(false);

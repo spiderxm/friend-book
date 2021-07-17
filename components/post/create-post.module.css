@@ -7,12 +7,13 @@
     box-shadow: rgba(50, 50, 93, 0.25) 0 50px 100px -20px, rgba(0, 0, 0, 0.3) 0 30px 60px -30px;
 }
 
-.featureImage{
+.featureImage {
     display: block;
     margin: 1rem auto;
     max-width: 90%;
     border-radius: .5rem;
 }
+
 .map-container {
     position: absolute;
     top: 0;

@@ -50,7 +50,7 @@ const postSlice = createSlice({
                 errorMessage: "There is some error. Please try again later."
             }
         },
-        clearPosts(_state){
+        clearPosts(_state) {
             return initialState
         },
         updateLike(state, action) {

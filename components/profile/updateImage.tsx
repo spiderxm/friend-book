@@ -12,7 +12,6 @@ const UpdateImageForm: React.FC = () => {
     const formSubmitHandler = async (event: FormEvent) => {
         event.preventDefault();
         let body = new FormData(
-
         );
         // @ts-ignore
         body.append("image", image);
@@ -27,15 +26,19 @@ const UpdateImageForm: React.FC = () => {
                     "Authorization": "Bearer " + accessToken
                 }
             })
-            if(response.ok){
+            if (response.ok) {
                 const data = await response.json()
                 localStorage.setItem("image", data.image)
                 Notiflix.Notify.success('Profile Image Updated Successfully', {
-                    timeout: 2000
+                    timeout: 2000,
+                    position: "right-bottom"
                 })
                 await router.push("/profile")
-            }else{
-
+            } else {
+                Notiflix.Notify.failure('There is some error', {
+                    timeout: 2000,
+                    position: "right-bottom"
+                })
             }
         }
 

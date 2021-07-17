@@ -31,7 +31,6 @@ const Navbar: React.FC = () => {
                 <Icon name='sign-in' size={"large"}/>
                 SignIn
             </Button></Link> : null}
-
             {!loading && !loggedIn ?
                 <Link href={"/signup"}>
                     <Button size='small' color='black'>

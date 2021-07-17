@@ -74,7 +74,10 @@ const Post: React.FC<Props> = ({post}) => {
     return <div className={classes.post}>
         <div>
             <img className={classes.userImage} src={post.user.image} ALIGN={"middle"}/>
-            <span className={classes.username}>{post.user.username}</span>
+            <Link href={"/profile/" + post.user.username}>
+                <div
+                    className={classes.username}>{post.user.username}</div>
+            </Link>
         </div>
         <Link href={"/post/" + post.id.toString()}>
             <img src={post.image}/>

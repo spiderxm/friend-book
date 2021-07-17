@@ -13,7 +13,7 @@ interface Props {
 const MyPost: React.FC<Props> = ({post}) => {
     return <Link href={"/post/" + post.id.toString()}>
         <div className={classes.post}>
-            <img src={post.image}/>
+            <img src={post.image.startsWith("http") ? post.image : "http://localhost:8000" + post.image}/>
         </div>
     </Link>
 }
