@@ -2,6 +2,9 @@ import {Button} from "semantic-ui-react";
 import Notiflix from "notiflix";
 import React from "react";
 import {parseCookies} from "nookies";
+import {logoutUser} from "../../utility/auth";
+import {useDispatch} from "react-redux";
+import {useRouter} from "next/router";
 
 interface Props {
     username: string;
@@ -10,7 +13,8 @@ interface Props {
 }
 
 const UnFollowButton: React.FC<Props> = (props) => {
-
+    const dispatch = useDispatch();
+    const router = useRouter();
     const UnfollowHandler = async () => {
         Notiflix.Confirm.show(
             'Follow ' + props.username,
@@ -28,10 +32,13 @@ const UnFollowButton: React.FC<Props> = (props) => {
                         "Content-type": "application/json"
                     }
                 })
-                response.status
                 if (response.ok) {
                     props.setFollows(false);
                     props.setFollowers((followers) => followers - 1)
+                }else{
+                    if (response.status === 401) {
+                        await logoutUser(dispatch, router);
+                    }
                 }
             }, function () {
                 return;

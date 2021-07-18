@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import {parseCookies} from "nookies";
-import FollowersList from "../../components/profile/followers";
 import FollowingList from "../../components/profile/following";
 import {Loader} from "semantic-ui-react";
+import {logoutUser} from "../../utility/auth";
+import {useDispatch} from "react-redux";
+import {useRouter} from "next/router";
 
 export interface FollowingDetails {
     follows: Follows;
@@ -15,6 +17,8 @@ export interface Follows {
 }
 
 const FollowingDataPage = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const [following, setFollowing] = useState<FollowingDetails[]>([]);
     const [fetchedFollows, setFetchedFollows] = useState(false);
     const fetchFollowers = async () => {
@@ -28,6 +32,10 @@ const FollowingDataPage = () => {
             const data = await response.json()
             setFollowing(data.follows)
             setFetchedFollows(true);
+        } else {
+            if (response.status === 401) {
+                await logoutUser(dispatch, router);
+            }
         }
     }
     useEffect(() => {
@@ -37,7 +45,7 @@ const FollowingDataPage = () => {
     }, []);
     return <div>
         {fetchedFollows ? <FollowingList following={following}/> : null}
-        {!fetchedFollows ? <Loader active inline={"centered"}/>: null }
+        {!fetchedFollows ? <Loader active inline={"centered"}/> : null}
     </div>;
 }
 

@@ -8,6 +8,8 @@ import Head from "next/head";
 import UnFollowButton from "../../components/profile/unfollow-button";
 import FollowButton from "../../components/profile/follow-button";
 import {parseCookies} from "nookies";
+import {logoutUser} from "../../utility/auth";
+import {useDispatch} from "react-redux";
 
 interface Props {
     profile: UserProfile
@@ -36,6 +38,7 @@ interface Post {
 const userProfile: React.FC<Props> = ({profile}) => {
     const [followers, setFollowers] = useState(profile.followers_count);
     const router = useRouter();
+    const dispatch = useDispatch();
     let formattedDate: string | null = null;
     if (profile.created_at) {
         formattedDate = new Date(profile.created_at).toLocaleDateString("en-US", {
@@ -59,6 +62,10 @@ const userProfile: React.FC<Props> = ({profile}) => {
             const data = await response.json();
             setFollows(data.follows);
             setFetchedFollows(true);
+        } else {
+            if (response.status === 401) {
+                await logoutUser(dispatch, router);
+            }
         }
 
     }
@@ -96,8 +103,10 @@ const userProfile: React.FC<Props> = ({profile}) => {
         </div>
         <div className={classes.profileHeader}>
             {fetchedFollows && follows ?
-                <UnFollowButton username={profile.username} setFollows={setFollows} setFollowers={setFollowers}/> : null}
-            {fetchedFollows && !follows ? <FollowButton username={profile.username} setFollows={setFollows} setFollowers={setFollowers}/> : null}
+                <UnFollowButton username={profile.username} setFollows={setFollows}
+                                setFollowers={setFollowers}/> : null}
+            {fetchedFollows && !follows ?
+                <FollowButton username={profile.username} setFollows={setFollows} setFollowers={setFollowers}/> : null}
         </div>
         <Divider horizontal>Posts</Divider>
         <div className={classes.row}>

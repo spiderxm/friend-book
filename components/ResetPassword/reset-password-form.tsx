@@ -4,6 +4,9 @@ import classes from "./reset-password.module.css"
 import {Button, Form, Header, Loader, Message} from "semantic-ui-react";
 import {parseCookies} from "nookies";
 import Notiflix from "notiflix";
+import {logoutUser} from "../../utility/auth";
+import {useDispatch} from "react-redux";
+import {useRouter} from "next/router";
 
 const ResetPasswordForm: React.FC = () => {
     const oldPasswordRef = useRef<HTMLInputElement>(null);
@@ -11,6 +14,8 @@ const ResetPasswordForm: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<object | null>(null);
     const [successMessage, setSuccess] = useState<null | string>(null);
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     async function ResetPasswordHandler(event: FormEvent) {
         event.preventDefault();
@@ -49,6 +54,10 @@ const ResetPasswordForm: React.FC = () => {
                 oldPasswordRef.current!.value = ""
                 newPasswordRef.current!.value = ""
             } else {
+                if (response.status === 401) {
+                    await logoutUser(dispatch, router);
+                    return;
+                }
                 const errorData = await response.json()
                 setError(errorData.errors);
                 Notiflix.Notify.failure("There is some error", {

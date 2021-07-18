@@ -4,10 +4,13 @@ import classes from "./updateImage.module.css";
 import {parseCookies} from "nookies";
 import Notiflix from "notiflix";
 import {useRouter} from "next/router";
+import {logoutUser} from "../../utility/auth";
+import {useDispatch} from "react-redux";
 
 const UpdateImageForm: React.FC = () => {
     const [image, setImage] = useState<null | File>(null);
     const router = useRouter();
+    const dispatch = useDispatch();
     const imageRef = useRef<File | any>();
     const formSubmitHandler = async (event: FormEvent) => {
         event.preventDefault();
@@ -35,6 +38,10 @@ const UpdateImageForm: React.FC = () => {
                 })
                 await router.push("/profile")
             } else {
+                if (response.status === 401) {
+                    await logoutUser(dispatch, router);
+                    return;
+                }
                 Notiflix.Notify.failure('There is some error', {
                     timeout: 2000,
                     position: "right-bottom"

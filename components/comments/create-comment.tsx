@@ -3,13 +3,19 @@ import classes from "../../styles/Post.module.css"
 import React, {FormEvent, useState} from "react";
 import {parseCookies} from "nookies";
 import Notiflix from "notiflix";
+import {logoutUser} from "../../utility/auth";
+import {useRouter} from "next/router";
+import {useDispatch} from "react-redux";
 
 const CreateCommentForm: React.FC<any> = (props) => {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const dispatch = useDispatch();
 
     async function createCommentHandler(event: FormEvent) {
         event.preventDefault();
         setLoading(true)
+
         const comment = props.commentRef.current.value
         const accessToken = parseCookies()['access-token'];
         const response = await fetch("http://localhost:8000/posts/comment/", {
@@ -35,9 +41,13 @@ const CreateCommentForm: React.FC<any> = (props) => {
             props.commentRef.current.value = ""
             props.setComments([comment, ...props.comments])
         } else {
-            Notiflix.Notify.failure("There was some error. Please try again later.", {
-                timeout: 1000
-            })
+            if (response.status === 401) {
+                await logoutUser(dispatch, router);
+            } else {
+                Notiflix.Notify.failure("There was some error. Please try again later.", {
+                    timeout: 1000
+                })
+            }
         }
         setLoading(false)
     }

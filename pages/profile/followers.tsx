@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
 import {parseCookies} from "nookies";
 import FollowersList from "../../components/profile/followers";
+import {logoutUser} from "../../utility/auth";
+import {useDispatch} from "react-redux";
+import {useRouter} from "next/router";
 
 export interface FollowerDetails {
     follower: Follower;
@@ -13,6 +16,8 @@ export interface Follower {
 }
 
 const FollwersDataPage = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const [followers, setFollowers] = useState<FollowerDetails[]>([]);
     const [fetchedFollowers, setFetchedFollowers] = useState(false);
     const fetchFollowers = async () => {
@@ -26,6 +31,10 @@ const FollwersDataPage = () => {
             const data = await response.json()
             setFollowers(data.followers)
             setFetchedFollowers(true);
+        } else {
+            if (response.status === 401) {
+                await logoutUser(dispatch, router);
+            }
         }
     }
     useEffect(() => {

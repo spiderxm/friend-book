@@ -3,7 +3,7 @@ import classes from "./post.module.css";
 import {Icon} from "semantic-ui-react";
 import {parseCookies} from "nookies";
 import Notiflix from "notiflix";
-import {isLoggedIn} from "../../utility/auth";
+import {isLoggedIn, logoutUser} from "../../utility/auth";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useDispatch} from "react-redux";
@@ -61,6 +61,10 @@ const Post: React.FC<Props> = ({post}) => {
                 setLikes(newLikes);
             }
         } else {
+            if (response.status === 401) {
+                await logoutUser(dispatch, router);
+                return;
+            }
             Notiflix.Notify.failure("There is some error", {
                 timeout: 1000
             })

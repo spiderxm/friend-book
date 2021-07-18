@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import myPostSlice, {fetchMyPosts} from "../../store/my-posts";
 import {RootState} from "../../store";
+import {logoutUser} from "../../utility/auth";
 
 const CreatePostForm: React.FC = () => {
     const [image, setImage] = useState<null | File>(null);
@@ -55,6 +56,10 @@ const CreatePostForm: React.FC = () => {
                 }
                 await router.push("/profile")
             } else {
+                if (response.status === 401) {
+                    await logoutUser(dispatch, router);
+                    return;
+                }
                 const errors = await response.json()
                 setErrors(errors.errors);
                 Notiflix.Notify.failure('There is some error. Please try again later', {

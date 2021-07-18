@@ -1,5 +1,5 @@
 import {GetServerSideProps} from "next";
-import {isLoggedIn} from "../../utility/auth"
+import {isLoggedIn, logoutUser} from "../../utility/auth"
 import {parseCookies} from "nookies";
 import classes from "../../styles/Post.module.css"
 import {Icon} from "semantic-ui-react";
@@ -51,6 +51,10 @@ const PostDetailScreen: React.FC<any> = (props) => {
                 setLikes(newLikes);
             }
         } else {
+            if (response.status === 401) {
+                await logoutUser(dispatch, router);
+                return;
+            }
             Notiflix.Notify.failure("There is some error", {
                 timeout: 1000
             })
@@ -145,6 +149,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
             }
         }
     } else {
+
         return {
             notFound: true
         }
