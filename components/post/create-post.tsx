@@ -4,8 +4,9 @@ import classes from "./create-post.module.css";
 import {parseCookies} from "nookies";
 import Notiflix from "notiflix";
 import {useRouter} from "next/router";
-import {useDispatch} from "react-redux";
-import myPostSlice from "../../store/my-posts";
+import {useDispatch, useSelector} from "react-redux";
+import myPostSlice, {fetchMyPosts} from "../../store/my-posts";
+import {RootState} from "../../store";
 
 const CreatePostForm: React.FC = () => {
     const [image, setImage] = useState<null | File>(null);
@@ -14,6 +15,7 @@ const CreatePostForm: React.FC = () => {
     const captionRef = useRef<String | any>();
     const [errors, setErrors] = useState<object | null>(null);
     const dispatch = useDispatch();
+    const fetched: boolean = useSelector<RootState>(state => state.myPosts.fetched)
     const formSubmitHandler = async (event: FormEvent) => {
         event.preventDefault();
         setErrors(null);
@@ -46,7 +48,11 @@ const CreatePostForm: React.FC = () => {
                 Notiflix.Notify.success('Post Created Successfully', {
                     timeout: 1000
                 })
-                dispatch(myPostSlice.actions.addPost({post: post}))
+                if (fetched) {
+                    dispatch(myPostSlice.actions.addPost({post: post}))
+                } else {
+                    dispatch(fetchMyPosts())
+                }
                 await router.push("/profile")
             } else {
                 const errors = await response.json()

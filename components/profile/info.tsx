@@ -3,7 +3,7 @@ import classes from "./info.module.css";
 import {Button, Icon} from "semantic-ui-react";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {destroyCookie, parseCookies} from "nookies";
+import {parseCookies} from "nookies";
 import MyPosts from "./my-posts";
 import Notiflix from "notiflix";
 import {useDispatch} from "react-redux";
@@ -15,7 +15,28 @@ const ProfileInfo: React.FC = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [fetchedFriends, setFetchFriends] = useState(false);
+    const [friendsDataCount, setFriendsDataCount] = useState({
+        follows: 0,
+        followers: 0
+    });
+    const fetchFriendsInfo = async () => {
+        const response = await fetch("http://localhost:8000/users/user-friends-count/", {
+            headers: {
+                "Authorization": "Bearer " + parseCookies()['access-token'],
+                "Content-type": "application/json"
+            }
+        })
+        if (response.ok) {
+            const data = await response.json()
+            setFriendsDataCount(data);
+            setFetchFriends(true);
+        }
+    }
     useEffect(() => {
+        if (!fetchedFriends) {
+            fetchFriendsInfo();
+        }
         const cookies = parseCookies();
         if (cookies['refresh-token'] && cookies['access-token']) {
             setLoggedIn(true);
@@ -23,7 +44,7 @@ const ProfileInfo: React.FC = () => {
             setLoggedIn(false);
         }
         setLoading(false);
-    })
+    }, [])
 
     async function logoutHandler() {
 
@@ -49,14 +70,17 @@ const ProfileInfo: React.FC = () => {
                     })
                     document.cookie = `access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
                     document.cookie = `refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+                    document.cookie = `access-token=; path=/profile; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+                    document.cookie = `refresh-token=; path=/profile; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
                     localStorage.removeItem("email")
                     localStorage.removeItem("image")
                     localStorage.removeItem("username")
+                    localStorage.removeItem("user_since")
                     dispatch(myPostSlice.actions.clearPosts)
                     dispatch(postSlice.actions.clearPosts)
                     await router.replace("/signin")
                     Notiflix.Loading.remove(100);
-                    Notiflix.Notify.success("Logout Successfull", {
+                    Notiflix.Notify.success("Logout Successful", {
                         timeout: 1000,
                         position: "right-bottom"
                     })
@@ -92,6 +116,19 @@ const ProfileInfo: React.FC = () => {
                     {formattedDate ? <span className={classes.userSince}>User Since: {formattedDate}</span> : null}
                 </div>
             </div>
+            {fetchedFriends ?
+                <div className={classes.profile}>
+                    <Link href={"/profile/following"}>
+                        <Button size='small' color={"linkedin"}>
+                            Following: {friendsDataCount.follows}
+                        </Button>
+                    </Link>
+                    <Link href={"/profile/followers"}>
+                        <Button size='small' color={"linkedin"}>
+                            Followers: {friendsDataCount.followers}
+                        </Button>
+                    </Link>
+                </div> : null}
             <div className={classes.profile}>
                 {!loading && loggedIn ? <Link href={"reset-password"}>
                     <Button size='small' color='twitter'>
@@ -112,8 +149,8 @@ const ProfileInfo: React.FC = () => {
                     LogOut
                 </Button> : null}
             </div>
-            <MyPosts/>
 
+            <MyPosts/>
         </div>;
     } else {
         return <div>

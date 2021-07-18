@@ -5,7 +5,8 @@ interface State {
     loading: boolean,
     posts: Post[],
     error: boolean,
-    errorMessage: string | null
+    errorMessage: string | null,
+    fetched: boolean
 }
 
 interface Post {
@@ -26,7 +27,8 @@ const initialState: State = {
     loading: true,
     posts: [],
     error: false,
-    errorMessage: null
+    errorMessage: null,
+    fetched: false
 }
 
 
@@ -39,7 +41,8 @@ const myPostSlice = createSlice({
                 posts: [...action.payload.posts.results],
                 error: false,
                 loading: false,
-                errorMessage: null
+                errorMessage: null,
+                fetched: true
             }
         },
         addPost(state, action) {
@@ -47,18 +50,21 @@ const myPostSlice = createSlice({
                 posts: [action.payload.post, ...state.posts],
                 error: false,
                 loading: false,
-                errorMessage: null
+                errorMessage: null,
+                fetched: true
+
             }
         },
         removePost(state, action) {
             const id = action.payload.id;
             const posts = state.posts.filter(post => post.id !== id);
-            console.log(posts)
             return {
                 posts: posts,
                 error: state.error,
                 loading: state.loading,
-                errorMessage: state.errorMessage
+                errorMessage: state.errorMessage,
+                fetched: true
+
             }
         },
         clearPosts(_state) {
@@ -69,7 +75,8 @@ const myPostSlice = createSlice({
                 ...state,
                 loading: false,
                 error: true,
-                errorMessage: "There is some error. Please try again later."
+                errorMessage: "There is some error. Please try again later.",
+                fetched: true
             }
         },
     }
