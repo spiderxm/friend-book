@@ -1,0 +1,76 @@
+.navbar {
+    background: black;
+    min-height: 60px;
+}
+
+.heading {
+    font-family: monospace;
+    color: white;
+    margin: 1rem;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.search {
+    display: inline-block;
+    margin: 1rem;
+}
+
+.button {
+    display: inline-block;
+    float: right;
+    margin-left: 5px !important;
+}
+
+.buttonMenu {
+    margin: 1rem;
+    display: inline-block;
+    float: right;
+}
+
+.searchBar {
+    margin: 1rem auto;
+    width: 90%;
+}
+
+.menuButton {
+    margin: .5rem auto !important;
+}
+
+.div {
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
+.menu {
+    display: none;
+}
+
+.menuOpener {
+    margin: 1rem;
+    float: right;
+    color: white;
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .buttonMenu {
+        display: none;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .menuOpener {
+        display: inline-block;
+
+    }
+
+    .menu {
+        display: block;
+        width: 100%;
+    }
+}

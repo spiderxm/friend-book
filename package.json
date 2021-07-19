@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.6.0",
     "@types/next": "^9.0.0",
     "@types/react": "^17.0.14",
