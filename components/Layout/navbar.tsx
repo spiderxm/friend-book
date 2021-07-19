@@ -3,6 +3,7 @@ import {Button, Icon, Menu} from "semantic-ui-react";
 import Link from "next/link"
 import {parseCookies} from "nookies";
 import {useRouter} from "next/router";
+import SearchBar from "./search";
 
 const Navbar: React.FC = () => {
     const router = useRouter();
@@ -17,6 +18,7 @@ const Navbar: React.FC = () => {
         }
         setLoading(false);
     })
+
     return <Menu secondary>
         <Menu.Item
             name='Feed'
@@ -25,7 +27,9 @@ const Navbar: React.FC = () => {
             }}
         >
         </Menu.Item>
-
+        {!loading && loggedIn ?
+            <SearchBar/>
+            : null}
         <Menu.Menu position={"right"}>
             {!loading && !loggedIn ? <Link href={"/signin"}><Button size='small' color='black'>
                 <Icon name='sign-in' size={"large"}/>

@@ -16,7 +16,7 @@ const CreatePostForm: React.FC = () => {
     const captionRef = useRef<String | any>();
     const [errors, setErrors] = useState<object | null>(null);
     const dispatch = useDispatch();
-    const fetched: boolean = useSelector<RootState>(state => state.myPosts.fetched)
+    const fetched = useSelector<RootState>(state => state.myPosts.fetched)
     const formSubmitHandler = async (event: FormEvent) => {
         event.preventDefault();
         setErrors(null);

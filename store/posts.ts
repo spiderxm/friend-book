@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import Notiflix from "notiflix";
 
 interface State {
     loading: boolean,

@@ -50,6 +50,8 @@ const userProfile: React.FC<Props> = ({profile}) => {
     const [fetchedFollows, setFetchedFollows] = useState(false);
     const [username, _setUserName] = useState("");
     const fetchCheckUserIsFollowed = async () => {
+        if (!parseCookies()['access-token'])
+            return;
         const response = await fetch("http://localhost:8000/users/do-you-follow/", {
             method: "POST",
             body: JSON.stringify({"username": profile.username}),
